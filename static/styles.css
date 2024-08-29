@@ -1,0 +1,27 @@
+body {
+    background-color: #1E90FF; /* Blue background */
+    color: #FFD700; /* Yellow text */
+    font-family: 'Comic Sans MS', cursive, sans-serif; /* Bubbly font */
+}
+
+h1, h2 {
+    text-shadow: 2px 2px #000000; /* Add some shadow for a bubbly effect */
+}
+
+.list-group-item {
+    background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent background for list items */
+    border: none;
+}
+
+.container {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-primary {
+    background-color: #FFD700;
+    color: #1E90FF;
+    border: none;
+}

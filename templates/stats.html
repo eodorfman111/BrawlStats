@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brawler Stats</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Player Stats for {{ player_stats['name'] }}</h1>
+        <h2>Overall Stats</h2>
+        <ul class="list-group">
+            <li class="list-group-item">Current Trophies: {{ player_stats['current_trophies'] }}</li>
+            <li class="list-group-item">Highest Trophies: {{ player_stats['highest_trophies'] }}</li>
+            <li class="list-group-item">3 VS 3 Victories: {{ player_stats['three_v_three_victories'] }}</li>
+            <li class="list-group-item">Solo Victories: {{ player_stats['solo_victories'] }}</li>
+            <li class="list-group-item">Duo Victories: {{ player_stats['duo_victories'] }}</li>
+            <li class="list-group-item">Most Challenge Wins: {{ player_stats['most_challenge_wins'] }}</li>
+
+        </ul>
+
+        <h2 class="mt-5">Brawler Stats</h2>
+        <ul class="list-group">
+            <li class="list-group-item">Most Played Brawler: {{ stats['most_played_brawler'][0] }} with {{ stats['most_played_brawler'][1] }} games</li>
+            <li class="list-group-item">Most Wins Brawler: {{ stats['most_wins_brawler'][0] }} with {{ stats['most_wins_brawler'][1] }} wins</li>
+            <li class="list-group-item">Most Frequent Star Player: {{ stats['most_frequent_star_player_brawler'][0] }} with {{ stats['most_frequent_star_player_brawler'][1] }} Star Player awards</li>
+            <li class="list-group-item">Highest Star Player Rate: {{ stats['highest_star_player_rate'][0] }} with a Star Player Rate of {{ stats['highest_star_player_rate'][1] | round(2) }}%</li>
+            <li class="list-group-item">Most Played Mode: {{ stats['most_played_mode'][0] }} with {{ stats['most_played_mode'][1] }} games</li>
+        </ul>
+
+        <form action="/brawler_stats" method="POST" class="mt-4">
+            <div class="mb-3">
+                <label for="brawlerName" class="form-label">Enter Brawler Name for Detailed Stats:</label>
+                <input type="text" class="form-control" id="brawlerName" name="brawlerName" required>
+            </div>
+            <input type="hidden" name="playerTag" value="{{ request.form['playerTag'] }}">
+            <button type="submit" class="btn btn-primary">Get Brawler Stats</button>
+        </form>
+    </div>
+</body>
+</html>
