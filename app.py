@@ -2,8 +2,9 @@ from flask import Flask, render_template, request
 import os
 import requests
 from dotenv import load_dotenv
+
+# Import your custom modules
 from stats_calculator import calculate_all_stats, get_brawler_stats, get_player_trophies
-from urllib.parse import urlparse
 
 # Load environment variables from .env file
 load_dotenv()
@@ -13,7 +14,7 @@ app = Flask(__name__)
 API_KEY = os.getenv("API_KEY")
 BASE_URL = "https://api.brawlstars.com/v1"
 
-# QuotaGuard Static URL
+# QuotaGuard Static URL for static IP proxy
 QUOTAGUARDSTATIC_URL = "http://xcazcsmwecie4j:zy3yx9malpjyv8gafppxj0c4pmwd9@us-east-static-04.quotaguard.com:9293"
 proxies = {
     "http": QUOTAGUARDSTATIC_URL,
@@ -27,7 +28,10 @@ def get_player_data(player_tag):
     response = requests.get(url, headers=headers, proxies=proxies)
 
     if response.status_code == 200:
-        return response.json()
+        player_data = response.json()
+        # Extract the profile picture URL from the player's data
+        player_data['profile_picture_url'] = f"https://cdn.brawlstars.com/player-profile/icons/{player_data['icon']['id']}.png"
+        return player_data
     else:
         raise Exception(f"Error fetching player data: {response.status_code} - {response.text}")
 
@@ -57,6 +61,7 @@ def stats():
         if not battle_log:
             return "No battle log data found."
 
+        # Populate player stats for rendering
         player_stats = {
             "name": player_data['name'],
             "current_trophies": player_data['trophies'],
@@ -65,7 +70,7 @@ def stats():
             "solo_victories": player_data.get('soloVictories', 'N/A'),
             "duo_victories": player_data.get('duoVictories', 'N/A'),
             "most_challenge_wins": player_data.get('bestRoboRumbleTime', 'N/A'),
-            "profile_picture_url": f"https://cdn.brawlstars.com/player-profile/icons/{player_data['icon']['id']}.png"  
+            "profile_picture_url": player_data['profile_picture_url']
         }
 
         stats = calculate_all_stats(battle_log, player_tag)
