@@ -29,8 +29,7 @@ def get_player_data(player_tag):
 
     if response.status_code == 200:
         player_data = response.json()
-        # Extract the profile picture URL from the player's data
-        player_data['profile_picture_url'] = f"https://cdn.brawlstars.com/player-profile/icons/{player_data['icon']['id']}.png"
+        
         return player_data
     else:
         raise Exception(f"Error fetching player data: {response.status_code} - {response.text}")
