@@ -57,7 +57,6 @@ def stats():
         if not battle_log:
             return "No battle log data found."
 
-        # Retrieve basic player stats
         player_stats = {
             "name": player_data['name'],
             "current_trophies": player_data['trophies'],
@@ -66,6 +65,7 @@ def stats():
             "solo_victories": player_data.get('soloVictories', 'N/A'),
             "duo_victories": player_data.get('duoVictories', 'N/A'),
             "most_challenge_wins": player_data.get('bestRoboRumbleTime', 'N/A'),
+            "profile_picture_url": f"https://cdn.brawlstars.com/player-profile/icons/{player_data['icon']['id']}.png"  
         }
 
         stats = calculate_all_stats(battle_log, player_tag)
