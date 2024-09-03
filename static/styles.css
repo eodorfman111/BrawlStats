@@ -1,16 +1,14 @@
 body {
     background-color: #1E90FF; /* Blue background */
     color: #FFD700; /* Yellow text */
-    font-family: 'Comic Sans MS', cursive, sans-serif; /* Bubbly font */
+    font-family: 'Roboto', sans-serif; /* Modern font */
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
 }
 
 h1, h2 {
-    text-shadow: 2px 2px #000000; /* Add some shadow for a bubbly effect */
-}
-
-.list-group-item {
-    background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent background for list items */
-    border: none;
+    text-shadow: 2px 2px 4px #000000; /* Add shadow for text */
 }
 
 .container {
@@ -20,8 +18,39 @@ h1, h2 {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
+.list-group-item {
+    background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent background */
+    border: none;
+    color: #FFD700; /* Keep yellow text for consistency */
+}
+
 .btn-primary {
     background-color: #FFD700;
     color: #1E90FF;
     border: none;
+}
+
+.profile-picture {
+    border-radius: 50%;
+    max-width: 100px;
+    height: auto;
+    margin-bottom: 20px;
+    border: 3px solid #FFD700;
+}
+
+
+.brawler-image {
+    border: 5px solid #FFD700; /* Yellow border */
+    border-radius: 15px;
+    max-width: 100%;
+    height: auto;
+}
+
+@media only screen and (max-width: 600px) {
+    body {
+        font-size: 14px;
+    }
+    h1, h2 {
+        font-size: 1.5em;
+    }
 }
