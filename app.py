@@ -23,11 +23,13 @@ def get_player_data(player_tag):
     headers = {"Authorization": f"Bearer {API_KEY}"}
 
     response = requests.get(url, headers=headers, proxies=proxies)
-
+    
     if response.status_code == 200:
         player_data = response.json()
-        if player_data is None:
-            raise Exception("Player data not found.")
+        print(f"API Response for {player_tag}: {player_data}")  # Debugging statement
+        
+        if not player_data or not isinstance(player_data, dict):
+            raise Exception("Player data not found or invalid format.")
         return player_data
     else:
         raise Exception(f"Error fetching player data: {response.status_code} - {response.text}")
@@ -58,8 +60,8 @@ def stats():
         # Ensure required keys exist
         required_keys = ['name', 'trophies', 'highestTrophies']
         for key in required_keys:
-            if key not in player_data:
-                raise Exception(f"Missing key in player data: {key}")
+            if key not in player_data or player_data[key] is None:
+                raise Exception(f"Missing or None key in player data: {key}")
         
         battle_log = get_player_battle_log(player_tag)
 
@@ -67,15 +69,16 @@ def stats():
             return "No battle log data found."
 
         player_stats = {
-            "name": player_data['name'],
-            "current_trophies": player_data['trophies'],
-            "highest_trophies": player_data['highestTrophies'],
-            "three_v_three_victories": player_data.get('3vs3Victories', 'N/A'),
-            "solo_victories": player_data.get('soloVictories', 'N/A'),
-            "duo_victories": player_data.get('duoVictories', 'N/A'),
-            "most_challenge_wins": player_data.get('bestRoboRumbleTime', 'N/A'),
-            "profile_picture_url": url_for('static', filename='images/shelly.png.png')
-        }
+    "name": player_data.get('name', 'Unknown Player'),
+    "current_trophies": player_data.get('trophies', 0),
+    "highest_trophies": player_data.get('highestTrophies', 0),
+    "three_v_three_victories": player_data.get('3vs3Victories', 'N/A'),
+    "solo_victories": player_data.get('soloVictories', 'N/A'),
+    "duo_victories": player_data.get('duoVictories', 'N/A'),
+    "most_challenge_wins": player_data.get('bestRoboRumbleTime', 'N/A'),
+    "profile_picture_url": url_for('static', filename='images/shelly.png.png')
+}
+
 
         stats = calculate_all_stats(battle_log, player_tag)
 
