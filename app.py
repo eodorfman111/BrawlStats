@@ -14,7 +14,6 @@ app = Flask(__name__)
 API_KEY = os.getenv("API_KEY")
 BASE_URL = "https://api.brawlstars.com/v1"
 
-
 QUOTAGUARDSTATIC_URL = "http://xcazcsmwecie4j:zy3yx9malpjyv8gafppxj0c4pmwd9@us-east-static-04.quotaguard.com:9293"
 proxies = {
     "http": QUOTAGUARDSTATIC_URL,
@@ -46,7 +45,9 @@ def get_player_battle_log(player_tag):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+
+    brawl_icon_url = url_for('static', filename='images/brawll.png.png')
+    return render_template('index.html', brawl_icon_url=brawl_icon_url)
 
 @app.route('/stats', methods=['POST'])
 def stats():
@@ -59,7 +60,7 @@ def stats():
         if not battle_log:
             return "No battle log data found."
 
-        
+  
         player_stats = {
             "name": player_data['name'],
             "current_trophies": player_data['trophies'],

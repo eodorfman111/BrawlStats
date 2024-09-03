@@ -14,11 +14,20 @@
             background-color: rgba(255, 255, 255, 0.2);
             text-align: center;
         }
+
+        .brawl-icon {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container custom-container">
         <h1 class="text-center">Brawl Stars Player Stats</h1>
+        
+        <!-- Brawl Stars Icon -->
+        <img src="{{ brawl_icon_url }}" alt="Brawl Stars Icon" class="brawl-icon">
+
         <form action="/stats" method="POST" class="mt-4">
             <div class="mb-3">
                 <label for="playerTag" class="form-label">Enter Player Tag (without #):</label>
