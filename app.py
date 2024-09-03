@@ -72,7 +72,10 @@ def stats():
             "most_challenge_wins": player_data.get('bestRoboRumbleTime', 'N/A'),
             "profile_picture_url": player_data['profile_picture_url']
         }
+
+        # Print the profile picture URL to logs for debugging
         print("Profile Picture URL:", player_stats['profile_picture_url'])
+
         stats = calculate_all_stats(battle_log, player_tag)
 
         return render_template('stats.html', stats=stats, player_stats=player_stats)
