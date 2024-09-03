@@ -3,9 +3,7 @@ import os
 import requests
 from dotenv import load_dotenv
 
-
 from stats_calculator import calculate_all_stats, get_brawler_stats, get_player_trophies
-
 
 load_dotenv()
 
@@ -28,6 +26,8 @@ def get_player_data(player_tag):
 
     if response.status_code == 200:
         player_data = response.json()
+        if player_data is None:
+            raise Exception("Player data not found.")
         return player_data
     else:
         raise Exception(f"Error fetching player data: {response.status_code} - {response.text}")
@@ -45,7 +45,6 @@ def get_player_battle_log(player_tag):
 
 @app.route('/')
 def index():
-
     brawl_icon_url = url_for('static', filename='images/brawll.png.png')
     return render_template('index.html', brawl_icon_url=brawl_icon_url)
 
@@ -55,12 +54,18 @@ def stats():
 
     try:
         player_data = get_player_data(player_tag)
+        
+        # Ensure required keys exist
+        required_keys = ['name', 'trophies', 'highestTrophies']
+        for key in required_keys:
+            if key not in player_data:
+                raise Exception(f"Missing key in player data: {key}")
+        
         battle_log = get_player_battle_log(player_tag)
 
         if not battle_log:
             return "No battle log data found."
 
-  
         player_stats = {
             "name": player_data['name'],
             "current_trophies": player_data['trophies'],
