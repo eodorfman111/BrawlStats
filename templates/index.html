@@ -33,8 +33,17 @@
         }
 
         .brawl-icon {
-            max-width: 100px;
+            max-width: 300px; /* Restore original size */
             margin-bottom: 30px;
+        }
+
+        .image-caption {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: -10px;
+            margin-bottom: 30px;
+            color: #FFD700; /* Yellow text */
+            text-shadow: 1px 1px 2px #000000;
         }
     </style>
 </head>
@@ -54,11 +63,11 @@
         <div class="image-container">
             <div>
                 <img src="{{ url_for('static', filename='images/trophygraph.png.png') }}" alt="Trophy Graph">
-                <p>Track your trophies over time!</p>
+                <p class="image-caption">Track your trophies over time!</p>
             </div>
             <div>
                 <img src="{{ url_for('static', filename='images/brawlers.png.png') }}" alt="Brawler Grid">
-                <p>Display your brawler stats!</p>
+                <p class="image-caption">Display your brawler stats!</p>
             </div>
         </div>
     </div>
