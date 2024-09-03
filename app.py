@@ -2,21 +2,27 @@ from flask import Flask, render_template, request
 import os
 import requests
 from dotenv import load_dotenv
-from stats_calculator import calculate_all_stats, get_brawler_stats, get_player_trophies
+from stats_calculator import calculate_all_stats, get_brawler_stats
 
 # Load environment variables from .env file
 load_dotenv()
 
 app = Flask(__name__)
 
-API_KEY = os.getenv("API_KEY")
+SCRAPER_API_KEY = os.getenv("SCRAPER_API_KEY")
+BRAWL_API_KEY = os.getenv("BRAWL_API_KEY")
 BASE_URL = "https://api.brawlstars.com/v1"
 
 def get_player_data(player_tag):
-    url = f"{BASE_URL}/players/%23{player_tag}"
-    headers = {"Authorization": f"Bearer {API_KEY}"}
+    scraperapi_url = 'https://api.scraperapi.com/'
+    brawl_stars_url = f"{BASE_URL}/players/%23{player_tag}"
 
-    response = requests.get(url, headers=headers)
+    payload = {
+        'api_key': SCRAPER_API_KEY,
+        'url': brawl_stars_url
+    }
+
+    response = requests.get(scraperapi_url, params=payload)
 
     if response.status_code == 200:
         return response.json()
@@ -24,10 +30,15 @@ def get_player_data(player_tag):
         raise Exception(f"Error fetching player data: {response.status_code} - {response.text}")
 
 def get_player_battle_log(player_tag):
-    url = f"{BASE_URL}/players/%23{player_tag}/battlelog"
-    headers = {"Authorization": f"Bearer {API_KEY}"}
+    scraperapi_url = 'https://api.scraperapi.com/'
+    brawl_stars_url = f"{BASE_URL}/players/%23{player_tag}/battlelog"
 
-    response = requests.get(url, headers=headers)
+    payload = {
+        'api_key': SCRAPER_API_KEY,
+        'url': brawl_stars_url
+    }
+
+    response = requests.get(scraperapi_url, params=payload)
 
     if response.status_code == 200:
         return response.json().get('items', [])
