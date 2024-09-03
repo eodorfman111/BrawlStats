@@ -8,43 +8,40 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         .custom-container {
-            margin-top: 100px;
-            padding: 40px;
+            margin-top: 50px;
+            padding: 20px;
             border-radius: 15px;
             background-color: rgba(255, 255, 255, 0.2);
             text-align: center;
         }
 
-        .brawl-icon, .trophy-graph, .brawler-grid {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 20px;
+        .image-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
         }
 
-        .image-caption {
-            font-size: 1.2em;
-            font-weight: bold;
-            margin-top: -10px;
+        .image-container img {
+            max-width: 45%; /* Ensure both images are the same size */
+            height: auto;
+            border-radius: 10px;
+            border: 2px solid #FFD700;
+        }
+
+        .welcome-text {
             margin-bottom: 30px;
-            color: #FFD700; /* Yellow text */
-            text-shadow: 1px 1px 2px #000000;
+        }
+
+        .brawl-icon {
+            max-width: 100px;
+            margin-bottom: 30px;
         }
     </style>
 </head>
 <body>
     <div class="container custom-container">
-        <h1 class="text-center">Welcome to Brawl Stars Player Stats</h1>
-        
-        <!-- Brawl Stars Icon -->
+        <h1 class="welcome-text">Welcome to Brawl Stars Player Stats</h1>
         <img src="{{ brawl_icon_url }}" alt="Brawl Stars Icon" class="brawl-icon">
-        
-        <!-- Trophy Graph Image -->
-        <img src="{{ url_for('static', filename='images/trophygraph.png') }}" alt="Trophy Graph" class="trophy-graph">
-        <p class="image-caption">Track your trophies over time!</p>
-        
-        <!-- Brawler Stats Grid Image -->
-        <img src="{{ url_for('static', filename='images/brawlers.png') }}" alt="Brawler Grid" class="brawler-grid">
-        <p class="image-caption">Display your brawler stats!</p>
 
         <form action="/stats" method="POST" class="mt-4">
             <div class="mb-3">
@@ -53,6 +50,17 @@
             </div>
             <button type="submit" class="btn btn-primary">Get Stats</button>
         </form>
+
+        <div class="image-container">
+            <div>
+                <img src="{{ url_for('static', filename='images/trophygraph.png.png') }}" alt="Trophy Graph">
+                <p>Track your trophies over time!</p>
+            </div>
+            <div>
+                <img src="{{ url_for('static', filename='images/brawlers.png.png') }}" alt="Brawler Grid">
+                <p>Display your brawler stats!</p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
