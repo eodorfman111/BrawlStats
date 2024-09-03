@@ -15,18 +15,36 @@
             text-align: center;
         }
 
-        .brawl-icon {
-            max-width: 200px;
+        .brawl-icon, .trophy-graph, .brawler-grid {
+            max-width: 100%;
+            height: auto;
             margin-bottom: 20px;
+        }
+
+        .image-caption {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: -10px;
+            margin-bottom: 30px;
+            color: #FFD700; /* Yellow text */
+            text-shadow: 1px 1px 2px #000000;
         }
     </style>
 </head>
 <body>
     <div class="container custom-container">
-        <h1 class="text-center">Brawl Stars Player Stats</h1>
+        <h1 class="text-center">Welcome to Brawl Stars Player Stats</h1>
         
         <!-- Brawl Stars Icon -->
         <img src="{{ brawl_icon_url }}" alt="Brawl Stars Icon" class="brawl-icon">
+        
+        <!-- Trophy Graph Image -->
+        <img src="{{ url_for('static', filename='images/trophygraph.png') }}" alt="Trophy Graph" class="trophy-graph">
+        <p class="image-caption">Track your trophies over time!</p>
+        
+        <!-- Brawler Stats Grid Image -->
+        <img src="{{ url_for('static', filename='images/brawlers.png') }}" alt="Brawler Grid" class="brawler-grid">
+        <p class="image-caption">Display your brawler stats!</p>
 
         <form action="/stats" method="POST" class="mt-4">
             <div class="mb-3">
