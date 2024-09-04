@@ -23,11 +23,11 @@ def get_player_data(player_tag):
     headers = {"Authorization": f"Bearer {API_KEY}"}
 
     response = requests.get(url, headers=headers, proxies=proxies)
-    
+
     if response.status_code == 200:
         player_data = response.json()
         print(f"API Response for {player_tag}: {player_data}")  # Debugging statement
-        
+
         if not player_data or not isinstance(player_data, dict):
             raise Exception("Player data not found or invalid format.")
         return player_data
@@ -56,13 +56,13 @@ def stats():
 
     try:
         player_data = get_player_data(player_tag)
-        
+
         # Ensure required keys exist
         required_keys = ['name', 'trophies', 'highestTrophies']
         for key in required_keys:
             if key not in player_data or player_data[key] is None:
                 raise Exception(f"Missing or None key in player data: {key}")
-        
+
         battle_log = get_player_battle_log(player_tag)
 
         if not battle_log:
