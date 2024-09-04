@@ -69,16 +69,15 @@ def stats():
             return "No battle log data found."
 
         player_stats = {
-    "name": player_data.get('name', 'Unknown Player'),
-    "current_trophies": player_data.get('trophies', 0),
-    "highest_trophies": player_data.get('highestTrophies', 0),
-    "three_v_three_victories": player_data.get('3vs3Victories', 'N/A'),
-    "solo_victories": player_data.get('soloVictories', 'N/A'),
-    "duo_victories": player_data.get('duoVictories', 'N/A'),
-    "most_challenge_wins": player_data.get('bestRoboRumbleTime', 'N/A'),
-    "profile_picture_url": url_for('static', filename='images/shelly.png.png')
-}
-
+            "name": player_data.get('name', 'Unknown Player'),
+            "current_trophies": player_data.get('trophies', 0),
+            "highest_trophies": player_data.get('highestTrophies', 0),
+            "three_v_three_victories": player_data.get('3vs3Victories', 'N/A'),
+            "solo_victories": player_data.get('soloVictories', 'N/A'),
+            "duo_victories": player_data.get('duoVictories', 'N/A'),
+            "most_challenge_wins": player_data.get('bestRoboRumbleTime', 'N/A'),
+            "profile_picture_url": url_for('static', filename='images/shelly.png.png')
+        }
 
         stats = calculate_all_stats(battle_log, player_tag)
 

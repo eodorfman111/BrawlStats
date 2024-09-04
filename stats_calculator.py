@@ -1,6 +1,4 @@
 def calculate_brawler_score(wins, games_played, star_player_count, trophies):
-
-
     if games_played == 0:
         return 0.0
 
@@ -17,31 +15,53 @@ def calculate_brawler_score(wins, games_played, star_player_count, trophies):
     return score
 
 def calculate_best_overall_brawler(battle_log, player_tag):
-
     brawler_stats = {}
-    
+
     # Calculate stats for each brawler
     for battle in battle_log:
-        players = battle['battle'].get('players', [])
-        for player in players:
-            if player['tag'] == f"#{player_tag}":
-                brawler_name = player['brawler']['name']
-                trophies = player['brawler'].get('trophies', 0)
-                is_star_player = player.get('result', '') == 'victory' and player.get('isStarPlayer', False)
-                
-                if brawler_name not in brawler_stats:
-                    brawler_stats[brawler_name] = {
-                        'wins': 0,
-                        'games_played': 0,
-                        'star_player_count': 0,
-                        'trophies': trophies
-                    }
+        if 'rounds' in battle['battle']:
+            for round_data in battle['battle']['rounds']:
+                players = round_data.get('players', [])
+                for player in players:
+                    if player['tag'] == f"#{player_tag}":
+                        brawler_name = player['brawler']['name']
+                        trophies = player['brawler'].get('trophies', 0)
+                        is_star_player = player.get('isStarPlayer', False)
+                        
+                        if brawler_name not in brawler_stats:
+                            brawler_stats[brawler_name] = {
+                                'wins': 0,
+                                'games_played': 0,
+                                'star_player_count': 0,
+                                'trophies': trophies
+                            }
 
-                brawler_stats[brawler_name]['games_played'] += 1
-                if player.get('result', '') == 'victory':
-                    brawler_stats[brawler_name]['wins'] += 1
-                if is_star_player:
-                    brawler_stats[brawler_name]['star_player_count'] += 1
+                        brawler_stats[brawler_name]['games_played'] += 1
+                        if player.get('result', '') == 'victory':
+                            brawler_stats[brawler_name]['wins'] += 1
+                        if is_star_player:
+                            brawler_stats[brawler_name]['star_player_count'] += 1
+        else:
+            players = battle['battle'].get('players', [])
+            for player in players:
+                if player['tag'] == f"#{player_tag}":
+                    brawler_name = player['brawler']['name']
+                    trophies = player['brawler'].get('trophies', 0)
+                    is_star_player = player.get('isStarPlayer', False)
+                    
+                    if brawler_name not in brawler_stats:
+                        brawler_stats[brawler_name] = {
+                            'wins': 0,
+                            'games_played': 0,
+                            'star_player_count': 0,
+                            'trophies': trophies
+                        }
+
+                    brawler_stats[brawler_name]['games_played'] += 1
+                    if player.get('result', '') == 'victory':
+                        brawler_stats[brawler_name]['wins'] += 1
+                    if is_star_player:
+                        brawler_stats[brawler_name]['star_player_count'] += 1
 
     # Calculate scores
     best_brawler = None
