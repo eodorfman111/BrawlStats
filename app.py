@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, url_for
 import os
 import requests
 from dotenv import load_dotenv
-
 from stats_calculator import calculate_all_stats, get_brawler_stats, get_player_trophies
 
 load_dotenv()
@@ -21,13 +20,10 @@ proxies = {
 def get_player_data(player_tag):
     url = f"{BASE_URL}/players/%23{player_tag}"
     headers = {"Authorization": f"Bearer {API_KEY}"}
-
     response = requests.get(url, headers=headers, proxies=proxies)
-
     if response.status_code == 200:
         player_data = response.json()
-        print(f"API Response for {player_tag}: {player_data}")  # Debugging statement
-
+        print(f"API Response for {player_tag}: {player_data}")
         if not player_data or not isinstance(player_data, dict):
             raise Exception("Player data not found or invalid format.")
         return player_data
@@ -37,11 +33,14 @@ def get_player_data(player_tag):
 def get_player_battle_log(player_tag):
     url = f"{BASE_URL}/players/%23{player_tag}/battlelog"
     headers = {"Authorization": f"Bearer {API_KEY}"}
-
     response = requests.get(url, headers=headers, proxies=proxies)
-
     if response.status_code == 200:
-        return response.json().get('items', [])
+        battle_log = response.json().get('items', [])
+        for battle in battle_log:
+            print(f"Mode: {battle['battle'].get('mode', 'Unknown')}")
+            print(f"Battle Data: {battle}")
+            print("-" * 50)
+        return battle_log
     else:
         raise Exception(f"Error fetching battle log: {response.status_code} - {response.text}")
 
@@ -53,21 +52,15 @@ def index():
 @app.route('/stats', methods=['POST'])
 def stats():
     player_tag = request.form['playerTag'].strip().upper()
-
     try:
         player_data = get_player_data(player_tag)
-
-        # Ensure required keys exist
         required_keys = ['name', 'trophies', 'highestTrophies']
         for key in required_keys:
             if key not in player_data or player_data[key] is None:
                 raise Exception(f"Missing or None key in player data: {key}")
-
         battle_log = get_player_battle_log(player_tag)
-
         if not battle_log:
             return "No battle log data found."
-
         player_stats = {
             "name": player_data.get('name', 'Unknown Player'),
             "current_trophies": player_data.get('trophies', 0),
@@ -78,11 +71,8 @@ def stats():
             "most_challenge_wins": player_data.get('bestRoboRumbleTime', 'N/A'),
             "profile_picture_url": url_for('static', filename='images/shelly.png.png')
         }
-
         stats = calculate_all_stats(battle_log, player_tag)
-
         return render_template('stats.html', stats=stats, player_stats=player_stats)
-
     except Exception as e:
         return f"An error occurred: {e}"
 
@@ -90,16 +80,13 @@ def stats():
 def brawler_stats():
     player_tag = request.form['playerTag']
     brawler_name = request.form['brawlerName'].strip().upper()
-
     try:
         player_data = get_player_data(player_tag)
         brawler_stats = get_brawler_stats(player_data, brawler_name)
-
         if brawler_stats:
             return render_template('brawler_stats.html', brawler_name=brawler_name, brawler_stats=brawler_stats)
         else:
             return f"No stats found for brawler: {brawler_name}"
-
     except Exception as e:
         return f"An error occurred: {e}"
 
